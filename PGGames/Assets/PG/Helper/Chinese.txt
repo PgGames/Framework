@@ -1,0 +1,4 @@
+Text UI_Login_01 = [注   册]
+Text UI_Login_02 = [登   陆]
+Text UI_Login_03 = [账   号]
+Text UI_Login_04 = [密   码]
