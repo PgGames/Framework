@@ -1,5 +1,6 @@
 ﻿//===========================================================
 /* 文本的有效格式 Text Key = Value;
+ * Txt文本的编码格式必须为UTF-8的编码格式
  *      key 于 Value 形成键值对的格式
  *      key中不能有空格的出现
  *      key值只能有字母数字和下划线构成
@@ -70,7 +71,7 @@ namespace PG.Manager
                 string Key;
                 string Value = "";
                 string[] TempLanguage = Temp_Content.Split('=');
-                if (Temp_Content.Length < 2)
+                if (TempLanguage.Length < 2)
                     continue;
                 Key = TempLanguage[0];
                 if (!TestingKeyLegal(ref Key))
@@ -82,7 +83,7 @@ namespace PG.Manager
                     else
                         Value += "=" + TempLanguage[jx];
                 }
-                Value = Value.Trim();
+                Value = TestingValueLegal(Value);
                 varDic.Add(Key, Value);
             }
         }
@@ -110,6 +111,7 @@ namespace PG.Manager
         private bool TestingKeyLegal(ref string Key)
         {
             //string TempKey = Key;
+            Key = Key.Trim();
             string[] content = Key.Split(' ');
             if (content.Length != 2)
                 return false;
@@ -132,14 +134,14 @@ namespace PG.Manager
         /// </summary>
         /// <param name="Value"></param>
         /// <returns></returns>
-        private bool TestingValueLegal(ref string Value)
+        private string TestingValueLegal(string Value)
         {
             //先移除两头无效的空格
             Value = Value.Trim();
             //当值中存在中括号时，移除两头的中括号
             if (Value.Contains("[") && Value.Contains("]"))
                 Value.Trim('[', ']');
-            return true;
+            return Value;
         }
 
         public string GetValueToKey(string Key)
