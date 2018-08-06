@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace PG.Helper
+namespace PG.Help
 {
     public class Helper : MonoBehaviour
     {
@@ -119,6 +119,20 @@ namespace PG.Helper
                 TempGame.SetActive(varActive);
             else
                 Debug.LogError(string.Format("{0}物体下的 {1} 路径不存在", varTren.name, path));
+        }
+
+
+
+        public static bool IsNullOrEmpty(string varContnet)
+        {
+            string Temp_Conent = varContnet;
+
+            if (string.IsNullOrEmpty(varContnet))
+                return true;
+            Temp_Conent = Temp_Conent.Trim();
+            if (string.IsNullOrEmpty(Temp_Conent))
+                return true;
+            return false;
         }
     }
 }

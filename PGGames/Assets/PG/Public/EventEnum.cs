@@ -13,5 +13,11 @@ namespace PG.Manager.Enum
     public enum EventEnum :ulong
     {
         Null = 0,
+
+        #region UI界面
+
+        UI_Open_PromptAuto,
+
+        #endregion
     }
 }

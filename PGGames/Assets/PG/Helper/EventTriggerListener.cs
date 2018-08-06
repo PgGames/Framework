@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 
 
-namespace PG.Helper
+namespace PG.Help
 {
     public class EventTriggerListener : UnityEngine.EventSystems.EventTrigger
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace PG.Helper
+namespace PG.Help
 {
     public class Constant
     {
@@ -13,6 +13,9 @@ namespace PG.Helper
         public const int LEN_PassWord = 16;         //密码的最大长度
 
 
+
+
+        public const float Time_PromptAuto = 3;         //自动提示框显示的时间
     }
 
 }

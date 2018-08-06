@@ -73,6 +73,7 @@ namespace PG.Manager
         protected void Protected_Init()
         {
             AddModle(ModelEnum.Login, new LoginModel());
+            AddModle(ModelEnum.Public, new PublicModel());
         }
         protected void AddModle(ModelEnum modelEnum, BaseModel varModel)
         {

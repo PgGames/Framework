@@ -15,6 +15,7 @@ namespace PG.Manager.Enum
     {
         NULL = 0,
         
-        UILogin = 1,        //登陆界面
+        UILogin,                //登陆界面
+        UIPromptAuto,           //提示框-文本提示无按钮自动关闭
     }
 }

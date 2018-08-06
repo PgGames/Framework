@@ -4,6 +4,8 @@ using UnityEngine;
 using PG.Model;
 using PG.Manager;
 using PG.Manager.Enum;
+using PG.UI;
+using PG.Help;
 
 public class LoginModel : BaseModel {
     
@@ -28,6 +30,17 @@ public class LoginModel : BaseModel {
     }
     public void Login_Detection(string varAccount, string varPassWord)
     {
+        if (Helper.IsNullOrEmpty(varAccount))
+        {
+            ShowErrorPrompt("账号不能为空");
+            return;
+        }
+        if( Helper.IsNullOrEmpty(varPassWord))
+        {
+            ShowErrorPrompt("密码不能为空");
+            return;
+        }
+
         uint UserID = 0;
         byte code = SQLManager.GetManager().User_Detection_AccountAndPassWord(varAccount, varPassWord, out UserID);
         if (code == 0)
@@ -37,8 +50,7 @@ public class LoginModel : BaseModel {
         }
         else
         {
-            string msg = SQLManager.GetManager().GetErrorCode(code);
-            Debug.LogError(msg);
+            ShowErrorPrompt(code);
         }
     }
     public void SignIn_Detection(string varAccount, string varPassWord,string Temp_ConfirmPassWord, byte varSex, string varNickName)
@@ -46,15 +58,13 @@ public class LoginModel : BaseModel {
         byte code = Account_Detection(varAccount);
         if (code != 0)
         {
-            string msg = SQLManager.GetManager().GetErrorCode(code);
-            Debug.LogError(msg);
+            ShowErrorPrompt(code);
             return;
         }
         code = PassWord_Detection(varPassWord);
         if (code != 0)
         {
-            string msg = SQLManager.GetManager().GetErrorCode(code);
-            Debug.LogError(msg);
+            ShowErrorPrompt(code);
             return;
         }
         code = SQLManager.GetManager().User_Detection_Sigin(varAccount, varPassWord, varSex, varNickName);
@@ -65,12 +75,31 @@ public class LoginModel : BaseModel {
         }
         else
         {
-            string msg = SQLManager.GetManager().GetErrorCode(code);
-            Debug.LogError(msg);
+            ShowErrorPrompt(code);
             return;
         }
     }
 
+
+
+    /// <summary>
+    /// 显示错误信息
+    /// </summary>
+    /// <param name="error"></param>
+    protected void ShowErrorPrompt(int errorCode)
+    {
+        string msg = SQLManager.GetManager().GetErrorCode(errorCode);
+        EventManager.Broadcast(EventEnum.UI_Open_PromptAuto, msg);
+    }
+    /// <summary>
+    /// 显示错误信息
+    /// </summary>
+    /// <param name="error"></param>
+    protected void ShowErrorPrompt(string error)
+    {
+        //string msg = SQLManager.GetManager().GetErrorCode(errorCode);
+        EventManager.Broadcast(EventEnum.UI_Open_PromptAuto, error);
+    }
 
     /// <summary>
     /// 账号检测

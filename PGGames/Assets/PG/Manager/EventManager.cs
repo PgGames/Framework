@@ -68,6 +68,8 @@ namespace PG.Manager
             else
             {
                 TempDate.Add(@event);
+                if (!All_Event.ContainsKey(@enum))
+                    All_Event.Add(@enum, TempDate);
             }
         }
         /// <summary>

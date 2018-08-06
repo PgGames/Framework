@@ -14,6 +14,7 @@ namespace PG.Manager.Enum
     {
         Null = 0,
 
-        Login =1,   //登陆模块
+        Login =1,       //登陆模块
+        Public =2,      //公共模块
     }
 }

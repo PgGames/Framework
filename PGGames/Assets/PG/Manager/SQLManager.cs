@@ -14,31 +14,31 @@ namespace PG.Manager
         //数据库地址
         private string m_SQL_Path;
         //数据库名称
-        private string m_SQL_Name = "PGGames.db";
+        private string m_SQL_Name = "/Const.db";
 
-        #region 固定信息库
+        //#region 固定信息库
 
-        //固定信息数据库
-        private SQLiteDate m_Const_SQLData;
-        //固定信息数据库地址
-        private string m_Const_SQL_Path;
-        //固定信息数据库名称
-        private string m_Const_SQL_Name = "/Const.db";
+        ////固定信息数据库
+        //private SQLiteDate m_Const_SQLData;
+        ////固定信息数据库地址
+        //private string m_Const_SQL_Path;
+        ////固定信息数据库名称
+        //private string m_Const_SQL_Name = "/Const.db";
 
-        #endregion
+        //#endregion
 
         public void Init()
         {
-            m_SQL_Path = Application.persistentDataPath + "/Games/";
+            m_SQL_Path = Application.streamingAssetsPath;
             if (!Directory.Exists(m_SQL_Path))
                 Directory.CreateDirectory(m_SQL_Path);
             m_SQLData = new SQLiteDate("data source=" + m_SQL_Path + m_SQL_Name);
 
             CreateTable();
-            m_Const_SQL_Path = Application.streamingAssetsPath;
-            if (!Directory.Exists(m_Const_SQL_Path))
-                Directory.CreateDirectory(m_Const_SQL_Path);
-            m_Const_SQLData = new SQLiteDate("data source=" + m_Const_SQL_Path + m_Const_SQL_Name);
+            //m_Const_SQL_Path = Application.streamingAssetsPath;
+            //if (!Directory.Exists(m_Const_SQL_Path))
+            //    Directory.CreateDirectory(m_Const_SQL_Path);
+            //m_Const_SQLData = new SQLiteDate("data source=" + m_Const_SQL_Path + m_Const_SQL_Name);
         }
 
 
@@ -245,9 +245,9 @@ namespace PG.Manager
             {
                 string TempErrorMsg = null;
 
-                if (m_Const_SQLData.ExistsTable("ErrorCode"))
+                if (m_SQLData.ExistsTable("ErrorCode"))
                 {
-                    m_Const_SQLData.SelectInfo("ErrorCode", (sql) =>
+                    m_SQLData.SelectInfo("ErrorCode", (sql) =>
                     {
                         while (sql.Read())
                         {
