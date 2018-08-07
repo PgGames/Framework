@@ -1,0 +1,24 @@
+
+//-----UI------
+//登陆界面
+
+Text UI_Login_01 = [User Login]
+Text UI_Login_02 = [Account：]
+Text UI_Login_03 = [PassWord：]
+Text UI_Login_04 = [Please enter account]
+Text UI_Login_05 = [Please enter password]
+Text UI_Login_06 = [Login]
+Text UI_Login_07 = [SignIn]
+Text UI_Login_08 = [NickName:]
+Text UI_Login_09 = [Account:]
+Text UI_Login_10 = [Gender:]
+Text UI_Login_11 = [PassWord:]
+Text UI_Login_12 = [ConfirmPass:]
+Text UI_Login_13 = [The length should not exceed 7 words]
+Text UI_Login_14 = [The length is between 6 and 16]
+Text UI_Login_15 = [Men]
+Text UI_Login_16 = [WoMen]
+Text UI_Login_17 = [consist of Numbers and letters]
+Text UI_Login_18 = [Please enter your password again]
+Text UI_Login_19 = [SignIn]
+Text UI_Login_20 = [Cancel]

@@ -230,6 +230,30 @@ namespace PG.Manager
             }
             return 0;       //注册成功
         }
+        /// <summary>
+        /// 获取登陆用户信息
+        /// </summary>
+        /// <param name="userID">用户id</param>
+        /// <param name="NickName">用户昵称</param>
+        /// <param name="Icon">用户头像</param>
+        /// <param name="Sex">用户性别</param>
+        /// <returns></returns>
+        public byte GetLoginUserInfo(uint userID,out string NickName,out byte Icon,out byte Sex)
+        {
+            NickName = null;
+            Icon = 1;
+            Sex = 0;
+            try
+            {
+                m_SQLData.SelectInfo("UserInfo", (sql) => { }, "(NickName,IconIdx,UserSex)", "UserID="+userID);
+            }
+            catch
+            {
+                return 1;   //数据库异常
+            }
+            return 0;       //注册成功
+        }
+
         #endregion
 
         #region 固定信息数据库

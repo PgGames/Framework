@@ -1,0 +1,25 @@
+
+//-----UI------
+//登陆界面
+
+Text UI_Login_01 = [用户登陆]
+Text UI_Login_02 = [账号：]
+Text UI_Login_03 = [密码：]
+Text UI_Login_04 = [请输入账号]
+Text UI_Login_05 = [请输入密码]
+Text UI_Login_06 = [登  陆]
+Text UI_Login_07 = [注  册]
+Text UI_Login_08 = [昵   称:]
+Text UI_Login_09 = [账   号:]
+Text UI_Login_10 = [性   别:]
+Text UI_Login_11 = [密   码:]
+Text UI_Login_12 = [确认密码:]
+Text UI_Login_13 = [昵称长度不能超过7个字]
+Text UI_Login_14 = [账号长度在6-16之间]
+Text UI_Login_15 = [男]
+Text UI_Login_16 = [女]
+Text UI_Login_17 = [密码只能由数字、字母构成]
+Text UI_Login_18 = [请再次输入密码]
+Text UI_Login_19 = [注  册]
+Text UI_Login_20 = [取  消]
+

@@ -45,6 +45,11 @@ namespace PG.Manager
         {
             return m_Game;
         }
+
+        [Header("游戏中使用的文字")]
+        public TextAsset m_Chinese;
+        public TextAsset m_English;
+
         /// <summary>
         /// 信息初始化
         /// </summary>
@@ -56,6 +61,12 @@ namespace PG.Manager
             SQLManager.GetManager().Init();
             //初始化---模块管理器
             ModelManager.GetManager().Init();
+            //初始化---语言信息-中文
+            LanguageManager.GetManager.m_Chinese = m_Chinese;
+            //初始化---语言信息-英文
+            LanguageManager.GetManager.m_English = m_English;
+            //初始化---语言信息
+            LanguageManager.GetManager.Init();
 
             //打开登陆模块
             ModelManager.GetManager().Open(Enum.ModelEnum.Login);

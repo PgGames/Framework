@@ -10,6 +10,7 @@
 //===========================================================
 
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,27 +18,58 @@ using UnityEngine.UI;
 
 namespace PG.Manager
 {
-    public class LanguageManager : MonoBehaviour
+    public class LanguageManager :MonoBehaviour
     {
-
+        public static LanguageManager m_Manager;
+        public static LanguageManager GetManager
+        {
+            get {
+                if (m_Manager == null)
+                {
+                    GameObject tempGame = new GameObject("LanguageManager");
+                    m_Manager = tempGame.AddComponent<LanguageManager>();
+                    GameObject.DontDestroyOnLoad(tempGame);
+                }
+                return m_Manager;
+            }
+        }
+        public void Init()
+        {
+            ReadText();
+        }
 
         public TextAsset m_Chinese;
         public TextAsset m_English;
+        private List<Action> CallBack = new List<Action>();
 
         public enum LanguageType
         {
             Chinese,
             English,
         }
+        private LanguageType m_private_Language;
         public LanguageType m_Language;
 
 
         protected Dictionary<string, string> Dic_Chinese = new Dictionary<string, string>();
         protected Dictionary<string, string> Dic_English = new Dictionary<string, string>();
 
-        private void Awake()
+        //private void Awake()
+        //{
+        //    ReadText();
+        //}
+        private void Update()
         {
-            ReadText();
+            if (m_Language != m_private_Language)
+            {
+                m_private_Language = m_Language;
+                for (int i = 0; i < CallBack.Count; i++)
+                {
+                    var fn = CallBack[i];
+                    if (fn != null)
+                        fn();
+                }
+            }
         }
 
         private void ReadText()
@@ -84,7 +116,8 @@ namespace PG.Manager
                         Value += "=" + TempLanguage[jx];
                 }
                 Value = TestingValueLegal(Value);
-                varDic.Add(Key, Value);
+                if (!varDic.ContainsKey(Key))
+                    varDic.Add(Key, Value);
             }
         }
         /// <summary>
@@ -140,7 +173,11 @@ namespace PG.Manager
             Value = Value.Trim();
             //当值中存在中括号时，移除两头的中括号
             if (Value.Contains("[") && Value.Contains("]"))
-                Value.Trim('[', ']');
+            {
+                Value = Value.Substring(1, Value.Length - 2);
+                //Value.TrimStart('[');
+                //Value.TrimEnd(']');
+            }
             return Value;
         }
 
@@ -157,6 +194,13 @@ namespace PG.Manager
             }
             return "";
         }
+        public void Add(Action action)
+        {
+            if (CallBack.Contains(action))
+                return;
+            CallBack.Add(action);
+        }
+
         private string GetValue(string Key, Dictionary<string, string> varDic)
         {
             if (!varDic.ContainsKey(Key))
