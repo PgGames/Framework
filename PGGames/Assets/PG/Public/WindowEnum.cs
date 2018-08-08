@@ -17,5 +17,6 @@ namespace PG.Manager.Enum
         
         UILogin,                //登陆界面
         UIPromptAuto,           //提示框-文本提示无按钮自动关闭
+        UIMain,                 //主界面
     }
 }
