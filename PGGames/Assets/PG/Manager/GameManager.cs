@@ -55,18 +55,33 @@ namespace PG.Manager
         /// </summary>
         public void Init()
         {
+            //初始化---通讯管理器
+            NetWorkManager.GetManager().Init();
+            //初始化---服务器（单机游戏中代替游戏服务端的信息）
+            ServerManager.GetManager().Init();
+
+            //初始化---用户信息
+            UserManager.GetManager.Init();
+
             //初始化---窗口管理器
             WindowManager.GetManager().Init();
             //初始化---数据库管理器
             SQLManager.GetManager().Init();
             //初始化---模块管理器
             ModelManager.GetManager().Init();
-            //初始化---语言信息-中文
-            LanguageManager.GetManager.m_Chinese = m_Chinese;
-            //初始化---语言信息-英文
-            LanguageManager.GetManager.m_English = m_English;
             //初始化---语言信息
-            LanguageManager.GetManager.Init();
+            LanguageManager.GetManager.Init(
+                new LanguageManager.Language
+                {
+                    m_Type = LanguageManager.LanguageType.Chinese,
+                    m_Txt = m_Chinese
+                },
+                new LanguageManager.Language {
+                    m_Type = LanguageManager.LanguageType.English,
+                    m_Txt = m_English
+                });
+
+
 
             //打开登陆模块
             ModelManager.GetManager().Open(Enum.ModelEnum.Login);

@@ -22,7 +22,8 @@ namespace PG.Manager.Enum
 
         #region 操作逻辑
 
-        Operate_User_LoginSuccess,          //用户登陆成功
+        User_Update_Player,             //更新用户信息
+        User_Setting_UserID,            //设置用户ID
 
         #endregion
     }

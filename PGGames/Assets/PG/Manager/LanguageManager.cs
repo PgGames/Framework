@@ -33,13 +33,11 @@ namespace PG.Manager
                 return m_Manager;
             }
         }
-        public void Init()
+        public void Init(params Language[] language)
         {
-            ReadText();
+            ReadText(language);
         }
-
-        public TextAsset m_Chinese;
-        public TextAsset m_English;
+        
         private List<Action> CallBack = new List<Action>();
 
         public enum LanguageType
@@ -50,14 +48,11 @@ namespace PG.Manager
         private LanguageType m_private_Language;
         public LanguageType m_Language;
 
+        
 
-        protected Dictionary<string, string> Dic_Chinese = new Dictionary<string, string>();
-        protected Dictionary<string, string> Dic_English = new Dictionary<string, string>();
+        protected Dictionary<LanguageType, Dictionary<string, string>> Dic_Language = new Dictionary<LanguageType, Dictionary<string, string>>();
 
-        //private void Awake()
-        //{
-        //    ReadText();
-        //}
+        
         private void Update()
         {
             if (m_Language != m_private_Language)
@@ -72,10 +67,22 @@ namespace PG.Manager
             }
         }
 
-        private void ReadText()
+        private void ReadText(Language[] varLanguage)
         {
-            ReadTextAsset(m_Chinese, Dic_Chinese);
-            ReadTextAsset(m_English, Dic_English);
+            for (int i = 0; i < varLanguage.Length; i++)
+            {
+                Language Temp_Language = varLanguage[i];
+                if (Dic_Language.ContainsKey(Temp_Language.m_Type))
+                    continue;
+                Dictionary<string, string> Temp_DIC_Language = new Dictionary<string, string>();
+
+                ReadTextAsset(Temp_Language.m_Txt, Temp_DIC_Language);
+                Dic_Language.Add(Temp_Language.m_Type, Temp_DIC_Language);
+
+            }
+
+            //ReadTextAsset(m_Chinese, Dic_Chinese);
+            //ReadTextAsset(m_English, Dic_English);
         }
         /// <summary>
         /// 读取Txt文本
@@ -174,7 +181,8 @@ namespace PG.Manager
             //当值中存在中括号时，移除两头的中括号
             if (Value.Contains("[") && Value.Contains("]"))
             {
-                Value = Value.Substring(1, Value.Length - 2);
+                Value = Value.Trim('[',']');
+                //Value.Substring(1, Value.Length - 2);
                 //Value.TrimStart('[');
                 //Value.TrimEnd(']');
             }
@@ -183,16 +191,23 @@ namespace PG.Manager
 
         public string GetValueToKey(string Key)
         {
-            switch (m_Language)
-            {
-                case LanguageType.Chinese:
-                    return GetValue(Key, Dic_Chinese);
-                case LanguageType.English:
-                    return GetValue(Key, Dic_English);
-                default:
-                    break;
-            }
-            return "";
+            if (!Dic_Language.ContainsKey(m_Language))
+                return Key;
+            Dictionary<string, string> Temp_Language = new Dictionary<string, string>();
+            if (!Dic_Language.TryGetValue(m_Language, out Temp_Language))
+                return Key;
+            return GetValue(Key, Temp_Language);
+
+            //switch (m_Language)
+            //{
+            //    case LanguageType.Chinese:
+            //        return GetValue(Key, Dic_Chinese);
+            //    case LanguageType.English:
+            //        return GetValue(Key, Dic_English);
+            //    default:
+            //        break;
+            //}
+            //return "";
         }
         public void Add(Action action)
         {
@@ -209,6 +224,13 @@ namespace PG.Manager
             if (varDic.TryGetValue(Key, out Value))
                 return Value;
             return Key;
+        }
+
+
+        public struct Language
+        {
+            public LanguageType m_Type;
+            public TextAsset m_Txt;
         }
     }
 

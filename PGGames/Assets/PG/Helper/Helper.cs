@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using ProtoBuf;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -122,7 +124,11 @@ namespace PG.Help
         }
 
 
-
+        /// <summary>
+        /// 判断字符串是否为空
+        /// </summary>
+        /// <param name="varContnet"></param>
+        /// <returns></returns>
         public static bool IsNullOrEmpty(string varContnet)
         {
             string Temp_Conent = varContnet;
@@ -134,5 +140,26 @@ namespace PG.Help
                 return true;
             return false;
         }
+
+
+        #region ProtoBuf传输数据的加解密
+
+
+        public static T Get<T>(byte[] buffer)
+        {
+            MemoryStream stream = new MemoryStream(buffer);
+            T obj = Serializer.Deserialize<T>(stream);
+            return obj;
+        }
+        public static byte[] Set<T>(T obj)
+        {
+            MemoryStream stream = new MemoryStream();
+            Serializer.Serialize(stream, obj);
+            byte[] buffer = stream.ToArray();
+            return buffer;
+        }
+
+
+        #endregion
     }
 }

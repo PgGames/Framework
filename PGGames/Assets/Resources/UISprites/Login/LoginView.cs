@@ -35,6 +35,7 @@ namespace PG.UI
             FindTran();
             SettingCompent();
         }
+        
         protected int CaretWidth = 5;
 
         protected void FindTran()

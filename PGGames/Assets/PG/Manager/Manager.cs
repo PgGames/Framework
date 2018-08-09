@@ -22,4 +22,21 @@ namespace PG.Manager
         }
 
     }
+    public class Managers<T>
+    {
+        protected static T manager;
+        public static T GetManager
+        {
+            get
+            {
+                if (manager == null)
+                {
+                    manager = System.Activator.CreateInstance<T>(); ;
+                }
+                return manager;
+            }
+        }
+    }
+    public class Man
+    { }
 }

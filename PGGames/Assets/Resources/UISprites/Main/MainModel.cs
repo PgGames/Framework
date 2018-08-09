@@ -28,11 +28,12 @@ namespace PG.Model
         }
         public override void Close()
         {
+            //WindowManager.GetManager().Close_Windows(WindowEnum.)
             base.Close();
         }
         private void AddListenter()
         {
-            EventManager.GetManager().AddListener(EventEnum.Operate_User_LoginSuccess, User_LoginSuccess);
+            //EventManager.GetManager().AddListener(EventEnum.Operate_User_LoginSuccess, User_LoginSuccess);
         }
 
         protected void User_LoginSuccess(EventObjet eventObjet)

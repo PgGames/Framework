@@ -6,6 +6,7 @@ using PG.Manager;
 using PG.Manager.Enum;
 using PG.UI;
 using PG.Help;
+using PGServer.Struct.Login;
 
 public class LoginModel : BaseModel {
     
@@ -16,6 +17,7 @@ public class LoginModel : BaseModel {
         WindowManager.GetManager().AddPath(WindowEnum.UILogin, TempLogin);
 
         //base.Init();
+        AddListenter();
     }
     public override void Open()
     {
@@ -26,58 +28,125 @@ public class LoginModel : BaseModel {
     }
     public override void Close()
     {
+        WindowManager.GetManager().Close_Windows(WindowEnum.UILogin);
         base.Close();
     }
+    protected void AddListenter()
+    {
+        NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Login, Login_Result);
+        NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Signin, Signin_Result);
+        NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Userid, UserID_Result);
+    }
+    protected void Login_Result(byte[] date)
+    {
+        Result_Login TempDate = Helper.Get<Result_Login>(date);
+        if (TempDate.code != 0)
+        {
+            ShowErrorPrompt(TempDate.code);
+            return;
+        }
+        else
+        {
+            //Debug.LogError("登陆成功");
+            NetWorkManager.GetManager().SendLoginMessage(new NetWorkHead {
+                MainCommand = (int) CmdCommand.Login,
+                SubCommand = (int)LoginSub_Request.Userid,
+                Date = Helper.Set(new Request_GetUserInfo() {
+                    UserID = TempDate.UserID,
+                }),
+            });
+        }
+    }
+    protected void Signin_Result(byte[] date)
+    {
+        Result_Signin Temp_Data = Helper.Get<Result_Signin>(date);
+        if (Temp_Data.code != 0)
+            return;
+        else
+            ShowErrorPrompt("UI_Login_22");
+    }
+    protected void UserID_Result(byte[] date)
+    {
+        Result_User TempDate = Helper.Get<Result_User>(date);
+        if (TempDate.code != 0)
+            ShowErrorPrompt(TempDate.code);
+        else
+        {
+            EventManager.Broadcast(EventEnum.User_Setting_UserID, TempDate.UserID);
+            EventManager.Broadcast(EventEnum.User_Update_Player, new Players {
+                Icon = TempDate.IconIDx,
+                Sex = TempDate.Sex,
+                NickName = TempDate.NickName,
+            });
+            //UserManager
+            //打开主模块
+            ModelManager.GetManager().Open(ModelEnum.Main);
+            Close();
+        }
+    }
+
+
+
     public void Login_Detection(string varAccount, string varPassWord)
     {
         if (Helper.IsNullOrEmpty(varAccount))
         {
-            ShowErrorPrompt("账号不能为空");
+            ShowErrorPrompt("UI_Login_23");
             return;
         }
-        if( Helper.IsNullOrEmpty(varPassWord))
+        if (Helper.IsNullOrEmpty(varPassWord))
         {
-            ShowErrorPrompt("密码不能为空");
+            ShowErrorPrompt("UI_Login_24");
             return;
         }
 
-        uint UserID = 0;
-        byte code = SQLManager.GetManager().User_Detection_AccountAndPassWord(varAccount, varPassWord, out UserID);
-        if (code == 0)
+        Request_Login temp_Date = new Request_Login
         {
-            //登陆成功
-            Debug.LogError("登陆成功");
-        }
-        else
-        {
-            ShowErrorPrompt(code);
-        }
+            Account = varAccount,
+            PassWord = varPassWord,
+        };
+
+        NetWorkManager.GetManager().SendLoginMessage(new NetWorkHead {
+            MainCommand = (int)CmdCommand.Login,
+            SubCommand = (int)LoginSub_Request.Login,
+            Date = Helper.Set(temp_Date),
+        });
     }
     public void SignIn_Detection(string varAccount, string varPassWord,string Temp_ConfirmPassWord, byte varSex, string varNickName)
     {
-        byte code = Account_Detection(varAccount);
-        if (code != 0)
+        if (varPassWord != Temp_ConfirmPassWord)
         {
-            ShowErrorPrompt(code);
+            ShowErrorPrompt("UI_Login_21");
             return;
         }
-        code = PassWord_Detection(varPassWord);
-        if (code != 0)
+        if (Helper.IsNullOrEmpty(varAccount))
         {
-            ShowErrorPrompt(code);
+            ShowErrorPrompt("UI_Login_23");
             return;
         }
-        code = SQLManager.GetManager().User_Detection_Sigin(varAccount, varPassWord, varSex, varNickName);
-        if (code == 0)
+        if (Helper.IsNullOrEmpty(varPassWord))
         {
-            //注册成功
-            Debug.LogError("注册成功");
-        }
-        else
-        {
-            ShowErrorPrompt(code);
+            ShowErrorPrompt("UI_Login_24");
             return;
         }
+        if (Helper.IsNullOrEmpty(varNickName))
+        {
+            ShowErrorPrompt("UI_Login_25");
+            return;
+        }
+
+        Request_Signin Temp_Date = new Request_Signin {
+            Account = varAccount,
+            NickName = varNickName,
+            PassWord = varPassWord,
+            Sex =varSex,
+        };
+
+        NetWorkManager.GetManager().SendLoginMessage(new NetWorkHead {
+            MainCommand = (int)CmdCommand.Login,
+            SubCommand = (int)LoginSub_Request.Signin,
+            Date = Helper.Set(Temp_Date),
+        });
     }
 
 
@@ -100,52 +169,5 @@ public class LoginModel : BaseModel {
         //string msg = SQLManager.GetManager().GetErrorCode(errorCode);
         EventManager.Broadcast(EventEnum.UI_Open_PromptAuto, error);
     }
-
-    /// <summary>
-    /// 账号检测
-    /// 账号长度必须大于10，且只能有字母、数字构成
-    /// </summary>
-    /// <param name="varAccount"></param>
-    /// <returns></returns>
-    protected byte Account_Detection(string varAccount)
-    {
-        if (string.IsNullOrEmpty(varAccount))
-            return 8;           //账号不能为空
-        if (varAccount.Length < 5)
-            return 11;          //账号的长度不足
-        char[] TempAccount = varAccount.ToCharArray();
-
-        string DetectionStr = "1234567890ABCDEFGHIJKLMNOPQLSTUVWXYZabcdefghijklmnopqlstuvwxyz";
-
-        for (int i = 0; i < TempAccount.Length; i++)
-        {
-            char varchar = TempAccount[i];
-            if (DetectionStr.Contains(varchar.ToString()))
-                continue;
-            return 12;          //账号只能有数字和字母构成
-        }
-        return 0;
-    }
-    /// <summary>
-    /// 密码检测
-    /// 密码长度必须大于6，且只能有字母、数字构成
-    /// </summary>
-    /// <param name="varPassWord"></param>
-    /// <returns></returns>
-    protected byte PassWord_Detection(string varPassWord)
-    {
-        if (string.IsNullOrEmpty(varPassWord))
-            return 9;           //密码不能为空
-        if (varPassWord.Length < 6)
-            return 13;          //密码长度不足
-        string DetectionStr = "1234567890ABCDEFGHIJKLMNOPQLSTUVWXYZabcdefghijklmnopqlstuvwxyz";
-        for (int i = 0; i < varPassWord.Length; i++)
-        {
-            char varchar = varPassWord[i];
-            if (DetectionStr.Contains(varchar.ToString()))
-                continue;
-            return 14;          //密码只能有数字和字母构成
-        }
-        return 0;
-    }
+    
 }

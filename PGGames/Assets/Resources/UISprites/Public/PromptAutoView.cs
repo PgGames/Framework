@@ -10,7 +10,7 @@ namespace PG.UI
 {
     public class PromptAutoView : BaseView
     {
-        Text m_Prompt_Text;
+        HelpTxtValueToKey m_Prompt_Text;
         public override void Init()
         {
             FindTran();
@@ -18,13 +18,13 @@ namespace PG.UI
         }
         protected void FindTran()
         {
-            m_Prompt_Text = Helper.GetComponent<Text>(this.transform, "Root/Title");
+            m_Prompt_Text = Helper.GetComponent<HelpTxtValueToKey>(this.transform, "Root/Title");
         }
         public void OpenUI(string text)
         {
 
             if (m_Prompt_Text != null)
-                m_Prompt_Text.text = text;
+                m_Prompt_Text.SettingKey(text);
             m_Start = true;
         }
         bool m_Start = false;

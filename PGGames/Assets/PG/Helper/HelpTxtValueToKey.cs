@@ -8,7 +8,9 @@ namespace PG.Help
 {
     public class HelpTxtValueToKey : MonoBehaviour
     {
-        public string Key;
+        [SerializeField]
+        private string Key;
+        //private string privateKey;
         public Text m_Content;
 
         public void Awake()
@@ -16,6 +18,20 @@ namespace PG.Help
             LanguageManager.GetManager.Add(GetValueToKey);
             if (m_Content == null)
                 m_Content = Helper.GetComponent<Text>(this.transform, null);
+            //privateKey = Key;
+            GetValueToKey();
+        }
+        //private void Update()
+        //{
+        //    if (privateKey != Key)
+        //    {
+        //        GetValueToKey();
+        //        privateKey = Key;
+        //    }
+        //}
+        public void SettingKey(string varKey)
+        {
+            Key = varKey;
             GetValueToKey();
         }
         public void GetValueToKey()

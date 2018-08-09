@@ -74,6 +74,7 @@ namespace PG.Manager
         {
             AddModle(ModelEnum.Login, new LoginModel());
             AddModle(ModelEnum.Public, new PublicModel());
+            AddModle(ModelEnum.Main, new MainModel());
         }
         protected void AddModle(ModelEnum modelEnum, BaseModel varModel)
         {
