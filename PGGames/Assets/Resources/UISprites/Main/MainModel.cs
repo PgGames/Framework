@@ -14,8 +14,7 @@ namespace PG.Model
             GameObject Temp_Game = Resources.Load<GameObject>("UI/Prefabs/MainUI");
 
             WindowManager.GetManager().AddPath(WindowEnum.UIMain, Temp_Game);
-
-            AddListenter();
+            
             base.Init();
         }
         public override void Open()
@@ -28,12 +27,12 @@ namespace PG.Model
         }
         public override void Close()
         {
-            //WindowManager.GetManager().Close_Windows(WindowEnum.)
             base.Close();
         }
-        private void AddListenter()
+        protected override void AddListener()
         {
-            //EventManager.GetManager().AddListener(EventEnum.Operate_User_LoginSuccess, User_LoginSuccess);
+            //EventManager.
+            base.AddListener();
         }
 
         protected void User_LoginSuccess(EventObjet eventObjet)

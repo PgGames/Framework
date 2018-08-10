@@ -41,46 +41,42 @@ namespace PGServer
         }
 
         /// <summary>
-        /// 创建用户信息表
+        /// 创建用户基本信息表
         /// </summary>
         protected void CreateUserTable()
         {
             if (!m_SQLData.ExistsTable("UserInfo"))
             {
-                if (!m_SQLData.ExistsTable("UserInfo"))
-                {
-                    //创建用户信息表
-                    //表的结构
-                    /*
-                     * 表的字段      |  字段含义          字段类型
-                     * ---------------------------------------
-                     * UserID        |  用户标识    |       int(表的主键，自增)
-                     * UserSex       |  用户型别    |       int(默认为0，)
-                     * IconIdx       |  用户头像    |       int(默认为0，)
-                     * NickName      |  用户昵称    |     string
-                     * Account       |  登陆账号    |     string
-                     * PassWord      |  账户密码    |     string
-                     * SigninTime    |  注册时间    |      long
-                     * 
-                     */
-                    m_SQLData.CreateTable("UserInfo", new string[] {
-                        "UserID",
-                        "UserSex",
-                        "IconIdx",
-                        "NickName",
-                        "Account",
-                        "PassWord",
-                        "SigninTime",
-                    }, new string[] {
-                        "INTEGER NOT NULL PRIMARY KEY",
-                        "INTEGER DEFAULT 0",
-                        "INTEGER DEFAULT 0",
-                        "TEXT NOT NULL",
-                        "TEXT NOT NULL",
-                        "TEXT NOT NULL",
-                        "INTEGER",
-                    });
-                }
+                //创建用户信息表
+                //表的结构
+                /*
+                 * 表的字段      |  字段含义          字段类型
+                 * ---------------------------------------
+                 * UserID        |  用户标识    |       int(表的主键，自增)
+                 * UserSex       |  用户型别    |       int(默认为0，)
+                 * IconIdx       |  用户头像    |       int(默认为0，)
+                 * NickName      |  用户昵称    |     string
+                 * Account       |  登陆账号    |     string
+                 * PassWord      |  账户密码    |     string
+                 * SigninTime    |  注册时间    |      long
+                 */
+                m_SQLData.CreateTable("UserInfo", new string[] {
+                    "UserID",
+                    "UserSex",
+                    "IconIdx",
+                    "NickName",
+                    "Account",
+                    "PassWord",
+                    "SigninTime",
+                }, new string[] {
+                    "INTEGER NOT NULL PRIMARY KEY",
+                    "INTEGER DEFAULT 0",
+                    "INTEGER DEFAULT 0",
+                    "TEXT NOT NULL",
+                    "TEXT NOT NULL",
+                    "TEXT NOT NULL",
+                    "INTEGER",
+                });
             }
         }
 
@@ -202,10 +198,19 @@ namespace PGServer
                 xcode = User_Detection_NickName(varNickName);
                 if (xcode != 15)
                     return xcode;
-
+                //插入用户基本信息
                 string content = string.Format("(UserSex,Account,PassWord,NickName) VALUES ({0},'{1}','{2}','{3}')", varSex, varAccount, varPassWord, varNickName);
-
                 m_SQLData.InsertInfo("UserInfo", content);
+                //获取表的数据数量
+                int counts = 0;
+                m_SQLData.ExecuteQuery("Select count(*) AS Count From UserInfo ", (sql) => {
+                    while (sql.Read())
+                    {
+                        counts = int.Parse(sql["Count"].ToString());
+                    }
+                });
+                //插入用户战斗信息
+                m_SQLData.InsertInfo("UserCombatInfo", "(UserID) VALUES (" + counts + ")");
             }
             catch
             {

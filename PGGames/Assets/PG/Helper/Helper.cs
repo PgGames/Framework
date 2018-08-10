@@ -142,6 +142,19 @@ namespace PG.Help
         }
 
 
+
+        public static Sprite GetIconByIdx(int idx)
+        {
+            string name = "UI/Textures/Icon/Icon_x_" + idx;
+            Sprite sprite = null;
+
+            sprite = Resources.Load<Sprite>(name);
+
+            return sprite;
+        }
+
+
+
         #region ProtoBuf传输数据的加解密
 
 

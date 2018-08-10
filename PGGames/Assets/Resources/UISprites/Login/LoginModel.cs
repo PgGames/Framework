@@ -16,8 +16,7 @@ public class LoginModel : BaseModel {
         GameObject TempLogin = Resources.Load<GameObject>("UI/Prefabs/Login");
         WindowManager.GetManager().AddPath(WindowEnum.UILogin, TempLogin);
 
-        //base.Init();
-        AddListenter();
+        base.Init();
     }
     public override void Open()
     {
@@ -31,11 +30,13 @@ public class LoginModel : BaseModel {
         WindowManager.GetManager().Close_Windows(WindowEnum.UILogin);
         base.Close();
     }
-    protected void AddListenter()
+    protected override void AddListener()
     {
         NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Login, Login_Result);
         NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Signin, Signin_Result);
         NetWorkManager.GetManager().AddListen(NetWorkManager.ServerType.Login, (int)CmdCommand.Login, (int)LoginSub_Result.Userid, UserID_Result);
+
+        base.AddListener();
     }
     protected void Login_Result(byte[] date)
     {

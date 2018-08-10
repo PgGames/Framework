@@ -14,7 +14,9 @@ namespace PG.Model
         protected BaseView m_View;
 
         //模板初始化
-        public virtual void Init() { }
+        public virtual void Init() {
+            AddListener();
+        }
 
         public virtual void Open() {
             if (m_View != null)
@@ -26,8 +28,13 @@ namespace PG.Model
         }
         public virtual void Close()
         {
-            //if (m_View != null)
-            //    m_View.RemoveListener();
+            //RemoveListenter();
         }
+        protected virtual void AddListener()
+        {
+        }
+        //protected virtual void RemoveListenter()
+        //{
+        //}
     }
 }

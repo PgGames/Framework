@@ -14,7 +14,7 @@ namespace PG.Model {
             GameObject PromptAuto = Resources.Load<GameObject>("UI/Prefabs/PromptAuto");
             WindowManager.GetManager().AddPath(WindowEnum.UIPromptAuto, PromptAuto);
 
-            AddListener();
+            //AddListener();
             base.Init();
         }
         public override void Open()
@@ -26,7 +26,7 @@ namespace PG.Model {
             base.Close();
         }
 
-        protected void AddListener()
+        protected  override void AddListener()
         {
             EventManager.GetManager().AddListener(EventEnum.UI_Open_PromptAuto, PromptAutoWindows);
         }

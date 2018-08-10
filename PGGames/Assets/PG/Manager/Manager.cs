@@ -16,7 +16,6 @@ namespace PG.Manager
             if (manager == null)
             {
                 manager = GameManager.Manager.GetGame().AddComponent<T>();
-                //var ma = manager as Manager;
             }
             return manager;
         }

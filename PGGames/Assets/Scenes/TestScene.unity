@@ -495,25 +495,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224693875401244470, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -6123.588
-      objectReference: {fileID: 0}
-    - target: {fileID: 224693875401244470, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 3444.518
-      objectReference: {fileID: 0}
-    - target: {fileID: 224019246830966388, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+    - target: {fileID: 224070182405554768, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
         type: 2}
       propertyPath: m_LocalPosition.x
       value: 45.6
       objectReference: {fileID: 0}
-    - target: {fileID: 224019246830966388, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+    - target: {fileID: 224070182405554768, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -23.79
+      value: -23.829912
       objectReference: {fileID: 0}
     - target: {fileID: 224840019094937704, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
         type: 2}
@@ -525,15 +515,25 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -23.829964
       objectReference: {fileID: 0}
-    - target: {fileID: 224070182405554768, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+    - target: {fileID: 224019246830966388, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
         type: 2}
       propertyPath: m_LocalPosition.x
       value: 45.6
       objectReference: {fileID: 0}
-    - target: {fileID: 224070182405554768, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+    - target: {fileID: 224019246830966388, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -23.829912
+      value: -23.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 224693875401244470, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -6123.588
+      objectReference: {fileID: 0}
+    - target: {fileID: 224693875401244470, guid: 3ce30bee8b0f2eb4390ddb345071e1b3,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3444.518
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3ce30bee8b0f2eb4390ddb345071e1b3, type: 2}
